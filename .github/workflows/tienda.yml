@@ -3,7 +3,7 @@ name: Tienda
 on:
   push:
     branches: [ "main" ]
-    paths-ignore: [ "catalog.json", "icons/**", "tools/**", "*.md" ]
+    paths-ignore: [ "catalog.json", "icons/**", "apks/**", "tools/**", "*.md" ]
   workflow_dispatch:
 
 permissions:
