@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Universo Pinol Store: bolsa de compras con un planeta y su anillo, dentro de la zona segura. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
+    <path android:strokeColor="#FFA78BFA" android:strokeWidth="4" android:strokeLineCap="round" android:fillColor="#00000000"
+        android:pathData="M45,40 v-4 a9,9 0 0,1 18,0 v4" />
+    <path android:fillColor="#FF7C3AED" android:pathData="M34,40 h40 l-3,36 h-34 z" />
+    <path android:fillColor="#FF38BDF8" android:pathData="M47,58 a7,7 0 1,0 14,0 a7,7 0 1,0 -14,0 Z" />
+    <path android:strokeColor="#FFF1F5F9" android:strokeWidth="2.5" android:fillColor="#00000000"
+        android:pathData="M40,61 c4,3 24,-3 28,-8" />
+</vector>
