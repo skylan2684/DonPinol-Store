@@ -12,7 +12,7 @@
       "changelog": "• Horas en horas y minutos (4 h 29 min), sin decimales.\n• Historial con filtro: este ciclo, esta semana, este mes o por fechas.\n• Total de horas, km y jornadas del rango, por operador.\n• Exportar el historial por WhatsApp e importar el de tu compañero.",
       "versionCode": 8,
       "versionName": "1.0.8",
-      "apkUrl": "https://github.com/skylan2684/DonPinol-Store/releases/download/lecolite-v1.0.8/LecoLite-1.0.8.apk",
+      "apkUrl": "https://raw.githubusercontent.com/skylan2684/DonPinol-Store/main/apks/LecoLite-1.0.8.apk",
       "sha256": "ddfd9fe4d8e6430d8af22d92e1372108a06f7a1b82ef66b702e8504f83393d91",
       "size": 11251251,
       "updated": "16 nov 2026"

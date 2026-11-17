@@ -9,9 +9,9 @@ Ejemplo:
 
 Qué hace:
  1. Baja la APK del Release <tag> del repo privado (necesita `gh` con acceso a ese repo).
- 2. La sube como Release público «<slug>-<tag>» de este repo.
+ 2. La guarda en apks/ de este repo público (quita la versión anterior de esa app).
  3. Actualiza catalog.json (versión, enlace, SHA-256, tamaño, fecha y novedades) de la app con ese ícono/slug.
-Luego hay que hacer commit y push de catalog.json.
+Luego hay que hacer commit y push de catalog.json y apks/.
 El versionCode sale del último número del tag (v1.0.9 → 9), igual que en el CI de las apps.
 """
 import argparse, datetime, hashlib, json, os, subprocess, sys, tempfile
@@ -39,9 +39,13 @@ def main():
     data = open(path, "rb").read()
     sha = hashlib.sha256(data).hexdigest()
 
-    release = f"{a.slug}-{a.tag}"
-    gh("release", "create", release, path, "-R", STORE, "--title", f"{apk['name'][:-4]}",
-       "--notes", f"Copia pública para Universo Pinol Store. SHA-256: {sha}")
+    # La APK se guarda en apks/ de este repositorio público (la versión anterior de la misma app se quita).
+    apks = os.path.join(os.path.dirname(__file__), "..", "apks")
+    os.makedirs(apks, exist_ok=True)
+    prefix = apk["name"].rsplit("-", 1)[0] + "-"
+    for old in os.listdir(apks):
+        if old.startswith(prefix): os.remove(os.path.join(apks, old))
+    open(os.path.join(apks, apk["name"]), "wb").write(data)
 
     version_name = a.tag.lstrip("v")
     version_code = int(version_name.split(".")[-1])
@@ -51,7 +55,7 @@ def main():
     hoy = datetime.date.today()
     app.update(
         versionCode=version_code, versionName=version_name, sha256=sha, size=len(data),
-        apkUrl=f"https://github.com/{STORE}/releases/download/{release}/{apk['name']}",
+        apkUrl=f"https://raw.githubusercontent.com/{STORE}/main/apks/{apk['name']}",
         updated=f"{hoy.day} {MESES[hoy.month - 1]} {hoy.year}",
     )
     if a.cambios: app["changelog"] = a.cambios
