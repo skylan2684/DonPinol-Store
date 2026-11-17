@@ -28,11 +28,16 @@ jobs:
         env:
           KEYSTORE_B64: ${{ secrets.STORE_KEYSTORE_B64 }}
         run: |
-          if [ -z "$KEYSTORE_B64" ]; then echo "::error::Falta el secreto STORE_KEYSTORE_B64"; exit 1; fi
+          if [ -z "$KEYSTORE_B64" ]; then
+            echo "::warning::Falta el secreto STORE_KEYSTORE_B64: no se compila la tienda hasta que se configure la firma."
+            echo "HAS_KEY=false" >> "$GITHUB_ENV"; exit 0
+          fi
           echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/tienda.jks"
           echo "STORE_KEYSTORE_PATH=$RUNNER_TEMP/tienda.jks" >> "$GITHUB_ENV"
+          echo "HAS_KEY=true" >> "$GITHUB_ENV"
 
       - name: Compilar la tienda y ejecutar pruebas
+        if: env.HAS_KEY == 'true'
         env:
           STORE_KEYSTORE_PASSWORD: ${{ secrets.STORE_KEYSTORE_PASSWORD }}
           STORE_KEY_ALIAS: ${{ secrets.STORE_KEY_ALIAS }}
@@ -40,14 +45,14 @@ jobs:
         run: chmod +x gradlew && ./gradlew assembleRelease testReleaseUnitTest --stacktrace
 
       - name: Publicar resultados de pruebas
-        if: always()
+        if: always() && env.HAS_KEY == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: test-results
           path: app/build/reports/tests/
 
       - name: Publicar la tienda y anotarla en el catálogo
-        if: success() && github.event_name != 'pull_request'
+        if: success() && env.HAS_KEY == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -70,7 +75,7 @@ jobs:
               "tagline": "La tienda de apps de Pinol", "category": "Herramientas",
               "color": "#8B5CF6", "icon": "icons/tienda.png",
               "versionCode": int(version.split(".")[-1]), "versionName": version,
-              "apkUrl": f"https://github.com/skylan2684/UniversoPinolStore/releases/download/tienda-v{version}/{apk}",
+              "apkUrl": f"https://github.com/skylan2684/DonPinol-Store/releases/download/tienda-v{version}/{apk}",
               "sha256": sha, "size": int(size), "updated": f"{hoy.day} {meses[hoy.month-1]} {hoy.year}",
           }
           cat["apps"] = [a for a in cat["apps"] if a["id"] != entry["id"]] + [entry]

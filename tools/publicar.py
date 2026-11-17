@@ -16,7 +16,7 @@ El versionCode sale del último número del tag (v1.0.9 → 9), igual que en el 
 """
 import argparse, datetime, hashlib, json, os, subprocess, sys, tempfile
 
-STORE = "skylan2684/UniversoPinolStore"
+STORE = "skylan2684/DonPinol-Store"
 MESES = "ene feb mar abr may jun jul ago sep oct nov dic".split()
 
 

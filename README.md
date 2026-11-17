@@ -2,7 +2,7 @@
 
 Tienda de apps de Pinol, estilo Play Store: muestra sus apps, las instala y avisa e instala las actualizaciones con un toque.
 
-**Descargar la tienda:** en [Releases](https://github.com/skylan2684/UniversoPinolStore/releases), la más reciente que empiece con `tienda-v`. Se instala una sola vez; después se actualiza desde ella misma.
+**Descargar la tienda:** en [Releases](https://github.com/skylan2684/DonPinol-Store/releases), la más reciente que empiece con `tienda-v`. Se instala una sola vez; después se actualiza desde ella misma.
 
 ## Cómo funciona
 - `catalog.json`: la lista de apps (nombre, descripción, novedades, versión, enlace de la APK, SHA-256 y tamaño). La tienda lo lee de este repositorio.

@@ -34,7 +34,7 @@ enum class AppStatus { NOT_INSTALLED, UPDATE, INSTALLED }
 
 object Store {
     const val OWNER = "skylan2684"
-    const val REPO = "UniversoPinolStore"
+    const val REPO = "DonPinol-Store"
     const val RAW = "https://raw.githubusercontent.com/$OWNER/$REPO/main/"
     const val CATALOG_URL = RAW + "catalog.json"
     const val SELF_ID = "com.universopinol.store"
