@@ -9,12 +9,12 @@
       "color": "#34D399",
       "icon": "icons/lecolite.png",
       "description": "Lleva tus jornadas de fumigación sin cuaderno: inicio, activar LECO, pausas y fin, con contadores en vivo. Arma el informe para WhatsApp, suma las horas de tu compañero sin duplicados y avisa cuando se acerca el mantenimiento de las 100 h. Funciona sin internet y los datos quedan solo en tu teléfono.",
-      "changelog": "• Nuevo: pestaña Mapa con el recorrido GPS de cada jornada.\n• Mapa de terreno (OpenStreetMap) por defecto; también satélite y mapa simple.\n• Flechas de dirección y mapa que gira según el rumbo.\n• Azul = fumigando; gris = salida de bodega o pausa.\n• Ver el recorrido de cualquier jornada desde su informe.",
-      "versionCode": 9,
-      "versionName": "1.0.9",
-      "apkUrl": "https://raw.githubusercontent.com/skylan2684/DonPinol-Store/main/apks/LecoLite-1.0.9.apk",
-      "sha256": "439d6305d3ad1785124d7cd5feb618534111f6474477634b18c4f019194c5f69",
-      "size": 11762158,
+      "changelog": "• Pantalla de inicio nueva\n• El informe del día se puede mandar con el recorrido en archivo GPX\n• En pausa ya no se graba el recorrido",
+      "versionCode": 10,
+      "versionName": "1.0.10",
+      "apkUrl": "https://raw.githubusercontent.com/skylan2684/DonPinol-Store/main/apks/LecoLite-1.0.10.apk",
+      "sha256": "fc72b1cd5ce444b71c83ee7199aaea6d471290356302074ed234d5b0be937dcb",
+      "size": 11779106,
       "updated": "17 nov 2026"
     }
   ]
