@@ -24,11 +24,11 @@
       "category": "Herramientas",
       "color": "#8B5CF6",
       "icon": "icons/tienda.png",
-      "versionCode": 3,
-      "versionName": "1.0.3",
-      "apkUrl": "https://github.com/skylan2684/DonPinol-Store/releases/download/tienda-v1.0.3/UniversoPinolStore-1.0.3.apk",
-      "sha256": "a49df3dadc3d6143c73fa11aa161b575a91bcebb1e320117fd2d3d5945fdec59",
-      "size": 11228110,
+      "versionCode": 4,
+      "versionName": "1.0.4",
+      "apkUrl": "https://github.com/skylan2684/DonPinol-Store/releases/download/tienda-v1.0.4/UniversoPinolStore-1.0.4.apk",
+      "sha256": "394de44c09903e1dec089232ad3fcafa10602c095e94be1d8fd2e7cbc392d5fd",
+      "size": 11228106,
       "updated": "18 nov 2026"
     }
   ]
