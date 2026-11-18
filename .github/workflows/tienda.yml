@@ -1,4 +1,5 @@
 name: Tienda
+# Compilación lanzada tras cargar los secretos de firma (18-11-2026)
 
 on:
   push:
