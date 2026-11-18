@@ -16,6 +16,20 @@
       "sha256": "40d7800f9e170b23da6d73d4b5a1a018466f224411383051611ed5391f7161c5",
       "size": 12184118,
       "updated": "18 nov 2026"
+    },
+    {
+      "id": "com.universopinol.store",
+      "name": "Universo Pinol Store",
+      "tagline": "La tienda de apps de Pinol",
+      "category": "Herramientas",
+      "color": "#8B5CF6",
+      "icon": "icons/tienda.png",
+      "versionCode": 3,
+      "versionName": "1.0.3",
+      "apkUrl": "https://github.com/skylan2684/DonPinol-Store/releases/download/tienda-v1.0.3/UniversoPinolStore-1.0.3.apk",
+      "sha256": "a49df3dadc3d6143c73fa11aa161b575a91bcebb1e320117fd2d3d5945fdec59",
+      "size": 11228110,
+      "updated": "18 nov 2026"
     }
   ]
 }
