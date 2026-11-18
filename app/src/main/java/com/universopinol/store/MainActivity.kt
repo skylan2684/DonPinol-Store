@@ -52,7 +52,6 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         vm.refreshInstalled()
-        vm.resumeAfterPermission()
     }
 
     private fun act(app: StoreApp, status: AppStatus) {
@@ -92,23 +91,23 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        s.needsPermissionFor?.let { app ->
+        s.readyApp?.let { app ->
             AlertDialog(
-                onDismissRequest = vm::permissionHandled,
-                title = { Text("Permiso para instalar") },
+                onDismissRequest = vm::readyHandled,
+                title = { Text("${app.name} descargada") },
                 text = {
                     Text(
-                        "Para instalar ${app.name}, Android necesita que permitas a Universo Pinol Store instalar apps. " +
-                            "En la siguiente pantalla activa «Permitir de esta fuente» y vuelve con la flecha atrás. Solo se hace una vez."
+                        "La descarga está verificada (SHA-256 correcto). Abre «Descargas», toca «${app.name} ${app.versionName}.apk» " +
+                            "y sigue los pasos de Android para instalarla."
                     )
                 },
                 confirmButton = {
                     TextButton(onClick = {
-                        vm.goToPermission()
-                        startActivity(Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, Uri.parse("package:$packageName")))
-                    }) { Text("Dar permiso") }
+                        vm.readyHandled()
+                        startActivity(Intent(android.app.DownloadManager.ACTION_VIEW_DOWNLOADS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                    }) { Text("Abrir Descargas") }
                 },
-                dismissButton = { TextButton(onClick = vm::permissionHandled) { Text("Ahora no") } }
+                dismissButton = { TextButton(onClick = vm::readyHandled) { Text("Después") } }
             )
         }
     }

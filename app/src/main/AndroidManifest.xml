@@ -3,8 +3,6 @@
 
     <!-- Descargar el catálogo y las apps -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Instalar y actualizar las apps de la tienda (Android pide confirmación en cada instalación) -->
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <!-- Aviso de «hay actualización» -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
@@ -33,6 +31,5 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".install.InstallResultReceiver" android:exported="false" />
     </application>
 </manifest>

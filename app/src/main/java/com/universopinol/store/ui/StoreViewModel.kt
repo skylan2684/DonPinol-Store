@@ -11,7 +11,7 @@ import com.universopinol.store.data.Store
 import com.universopinol.store.data.StoreApp
 import com.universopinol.store.install.Downloader
 import com.universopinol.store.install.InstallEvents
-import com.universopinol.store.install.Installer
+import com.universopinol.store.install.Handoff
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,8 +32,8 @@ data class UiState(
     val installed: Map<String, Long> = emptyMap(),
     val jobs: Map<String, Job> = emptyMap(),
     val message: String? = null,
-    /** La tienda necesita el permiso de «instalar apps desconocidas»; se guarda qué app se quería instalar. */
-    val needsPermissionFor: StoreApp? = null
+    /** App ya descargada y verificada, lista para que el usuario la instale desde «Descargas». */
+    val readyApp: StoreApp? = null
 ) {
     val apps: List<StoreApp> get() = catalog.apps.filter { it.visible && it.id != Store.SELF_ID }
     val selfUpdate: StoreApp? get() = catalog.apps.firstOrNull { it.id == Store.SELF_ID }?.takeIf { (installed[it.id] ?: Long.MAX_VALUE) < it.versionCode }
@@ -92,16 +92,16 @@ class StoreViewModel(app: Application) : AndroidViewModel(app) {
     fun install(app: StoreApp) {
         val ctx = getApplication<Application>()
         if (_state.value.jobs.containsKey(app.id)) return
-        if (!Installer.canInstall(ctx)) { _state.update { it.copy(needsPermissionFor = app) }; return }
         _state.update { it.copy(jobs = it.jobs + (app.id to Job.Downloading(0f)), message = null) }
         viewModelScope.launch {
             val r = withContext(Dispatchers.IO) {
                 runCatching {
                     val file = Downloader.download(ctx, app) { p -> _state.update { it.copy(jobs = it.jobs + (app.id to Job.Downloading(p))) } }
-                    _state.update { it.copy(jobs = it.jobs + (app.id to Job.Installing)) }
-                    Installer.install(ctx, file, app.id)
+                    Handoff.saveToDownloads(ctx, file, "${app.name} ${app.versionName}.apk")
+                    file.delete()
                 }
             }
+            r.onSuccess { _state.update { it.copy(jobs = it.jobs - app.id, readyApp = app) } }
             r.onFailure { e ->
                 _state.update { it.copy(jobs = it.jobs - app.id, message = e.message ?: "No se pudo descargar. Revisa tu internet.") }
             }
@@ -110,17 +110,7 @@ class StoreViewModel(app: Application) : AndroidViewModel(app) {
 
     fun updateAll() = _state.value.updates.forEach { install(it) }
 
-    private var awaitingPermission: StoreApp? = null
-
-    fun permissionHandled() = _state.update { it.copy(needsPermissionFor = null) }
-
-    /** El usuario va a Ajustes a dar el permiso; al volver se retoma la instalación. */
-    fun goToPermission() { awaitingPermission = _state.value.needsPermissionFor; permissionHandled() }
-
-    fun resumeAfterPermission() {
-        val pending = awaitingPermission ?: return
-        if (Installer.canInstall(getApplication())) { awaitingPermission = null; install(pending) }
-    }
+    fun readyHandled() = _state.update { it.copy(readyApp = null) }
 
     fun consumeMessage() = _state.update { it.copy(message = null) }
 
