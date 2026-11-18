@@ -3,13 +3,17 @@
 
     <!-- Descargar el catálogo y las apps -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Instalar y actualizar las apps de la tienda -->
+    <!-- Instalar y actualizar las apps de la tienda (Android pide confirmación en cada instalación) -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-    <uses-permission android:name="android.permission.UPDATE_PACKAGES_WITHOUT_USER_ACTION" />
-    <!-- Saber qué apps de la tienda ya están instaladas y su versión -->
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
     <!-- Aviso de «hay actualización» -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- Solo vemos las apps del catálogo (no todas las del teléfono).
+         Al agregar una app nueva a catalog.json hay que listarla aquí también. -->
+    <queries>
+        <package android:name="com.lecolite.app" />
+        <package android:name="com.universopinol.store" />
+    </queries>
 
     <application
         android:label="@string/app_name"
