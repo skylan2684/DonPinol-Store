@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-18",
+  "updatedAt": "2026-11-19",
   "apps": [
     {
       "id": "com.lecolite.app",
@@ -16,6 +16,22 @@
       "sha256": "40d7800f9e170b23da6d73d4b5a1a018466f224411383051611ed5391f7161c5",
       "size": 12184118,
       "updated": "18 nov 2026"
+    },
+    {
+      "id": "com.donpinol.stockqr",
+      "name": "StockQR",
+      "tagline": "Inventario con escaneo de QR y códigos de barras",
+      "category": "Trabajo",
+      "color": "#F59E0B",
+      "icon": "icons/stockqr.png",
+      "description": "Controla tu inventario sin internet: productos con foto, entradas, salidas y ajustes con historial, alertas de stock mínimo y escaneo de códigos QR y de barras con la cámara. Importa y exporta CSV, genera el QR de cada etiqueta y guarda respaldos completos (con fotos) que puedes restaurar. Los datos quedan solo en tu teléfono.",
+      "changelog": "• Primera versión\n• Productos con foto (cámara o galería)\n• Escáner de QR y códigos de barras\n• Respaldo ZIP con fotos y restauración\n• Importar y exportar CSV",
+      "versionCode": 1,
+      "versionName": "1.0.1",
+      "apkUrl": "https://raw.githubusercontent.com/skylan2684/DonPinol-Store/main/apks/StockQR-1.0.1.apk",
+      "sha256": "ebb4e9a576c19138420d1ddbc0219aac444b8d96443c3f68d3a075a0d707542f",
+      "size": 9099272,
+      "updated": "19 nov 2026"
     },
     {
       "id": "com.universopinol.store",
