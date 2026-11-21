@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Aviso de «hay actualización» -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Botón «Desinstalar» de la ficha de cada app -->
+    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
 
     <!-- Solo vemos las apps del catálogo (no todas las del teléfono).
          Al agregar una app nueva a catalog.json hay que listarla aquí también. -->
