@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-19",
+  "updatedAt": "2026-11-21",
   "apps": [
     {
       "id": "com.lecolite.app",
@@ -32,6 +32,22 @@
       "sha256": "ebb4e9a576c19138420d1ddbc0219aac444b8d96443c3f68d3a075a0d707542f",
       "size": 9099272,
       "updated": "19 nov 2026"
+    },
+    {
+      "id": "com.donpinol.lecomathgame",
+      "name": "Leco Math Game",
+      "tagline": "Combina piezas de la LECO y elimina zancudos",
+      "category": "Juegos",
+      "color": "#34C46E",
+      "icon": "icons/lecomathgame.png",
+      "description": "Juego de combinar piezas con temática LECO: camioneta, máquina, cronómetro, nube de fumigación, bidón y zancudo. Junta 3 o más iguales para cumplir la meta de cada jornada antes de que se acaben los movimientos. Son 100 jornadas con estrellas, piezas especiales que explotan al juntar 4 o más y sonidos. Funciona sin internet y tu avance queda solo en tu teléfono.",
+      "changelog": "• Primera versión\n• 100 jornadas con metas distintas\n• Estrellas por jornada y récord de puntos\n• Piezas con halo que explotan alrededor\n• Sonidos, con botón para apagarlos",
+      "versionCode": 1,
+      "versionName": "1.0.0",
+      "apkUrl": "https://raw.githubusercontent.com/skylan2684/DonPinol-Store/main/apks/LecoMathGame-1.0.0.apk",
+      "sha256": "231a60e5d632f93ffe5268c01ddbf226e8bd9d3e9cbbeb08a5a42bb9218fe42c",
+      "size": 628071,
+      "updated": "21 nov 2026"
     },
     {
       "id": "com.universopinol.store",
