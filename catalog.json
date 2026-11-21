@@ -41,12 +41,12 @@
       "color": "#34C46E",
       "icon": "icons/lecomathgame.png",
       "description": "Juego de combinar piezas con temática LECO: camioneta, máquina, cronómetro, nube de fumigación, bidón y zancudo. Junta 3 o más iguales para cumplir la meta de cada jornada antes de que se acaben los movimientos. Son 100 jornadas con estrellas, piezas especiales que explotan al juntar 4 o más y sonidos. Funciona sin internet y tu avance queda solo en tu teléfono.",
-      "changelog": "• Primera versión\n• 100 jornadas con metas distintas\n• Estrellas por jornada y récord de puntos\n• Piezas con halo que explotan alrededor\n• Sonidos, con botón para apagarlos",
-      "versionCode": 1,
-      "versionName": "1.0.0",
-      "apkUrl": "https://raw.githubusercontent.com/skylan2684/DonPinol-Store/main/apks/LecoMathGame-1.0.0.apk",
-      "sha256": "231a60e5d632f93ffe5268c01ddbf226e8bd9d3e9cbbeb08a5a42bb9218fe42c",
-      "size": 628071,
+      "changelog": "• Mejoras de compatibilidad e instalación\n• Letras del sistema, sin conexión a internet\n• Mismo juego: 100 jornadas, estrellas y sonidos",
+      "versionCode": 2,
+      "versionName": "1.0.1",
+      "apkUrl": "https://raw.githubusercontent.com/skylan2684/DonPinol-Store/main/apks/LecoMathGame-1.0.1.apk",
+      "sha256": "7d04cdedc4362a0b805e6c48593a15cbd169c3d4412b2b3014b88ef30e57531a",
+      "size": 1056639,
       "updated": "21 nov 2026"
     },
     {
