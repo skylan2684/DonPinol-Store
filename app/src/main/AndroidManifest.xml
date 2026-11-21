@@ -11,6 +11,8 @@
     <queries>
         <package android:name="com.lecolite.app" />
         <package android:name="com.universopinol.store" />
+        <package android:name="com.donpinol.stockqr" />
+        <package android:name="com.donpinol.lecomathgame" />
     </queries>
 
     <application
