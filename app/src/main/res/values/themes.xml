@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.Store" parent="android:Theme.Material.NoActionBar">
-        <item name="android:windowBackground">#FF070B16</item>
-        <item name="android:statusBarColor">#FF070B16</item>
-        <item name="android:navigationBarColor">#FF070B16</item>
+    <!-- Fondo inicial mientras carga la app; la app aplica después el tema claro u oscuro elegido. -->
+    <style name="Theme.Store" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">#FFF5F3EC</item>
+        <item name="android:statusBarColor">#FFF5F3EC</item>
+        <item name="android:navigationBarColor">#FFF5F3EC</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 </resources>

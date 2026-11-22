@@ -17,13 +17,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.BrightnessAuto
 import androidx.compose.material.icons.filled.CloudOff
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.SystemUpdate
 import androidx.compose.material3.Button
@@ -41,6 +45,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -57,10 +63,12 @@ fun HomeScreen(
     onRefresh: () -> Unit,
     onOpenDetail: (StoreApp) -> Unit,
     onAction: (StoreApp, AppStatus) -> Unit,
-    onUpdateAll: () -> Unit
+    onUpdateAll: () -> Unit,
+    mode: ThemeMode = ThemeMode.AUTO,
+    onToggleTheme: () -> Unit = {}
 ) {
     LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(bottom = 32.dp)) {
-        item(key = "cabecera") { Header(s.loading, onRefresh) }
+        item(key = "cabecera") { Header(s.loading, onRefresh, mode, onToggleTheme) }
 
         if (s.offline) item(key = "offline") {
             Banner(Icons.Filled.CloudOff, "Sin conexión", "Mostrando el último catálogo guardado. Toca ↻ para reintentar.", UP.Amber)
@@ -97,8 +105,21 @@ fun HomeScreen(
             }
         }
 
+        val destacadas = s.apps.takeLast(2).reversed()
+        if (destacadas.isNotEmpty()) item(key = "destacadas") {
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                items(destacadas, key = { it.id }) { app ->
+                    val status = Store.status(app, s.installed[app.id])
+                    FeaturedCard(app, status, s.jobs[app.id], { onOpenDetail(app) }) { onAction(app, status) }
+                }
+            }
+        }
+
         item(key = "titulo") {
-            Text("Apps", fontSize = 20.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(start = 20.dp, top = 18.dp, bottom = 4.dp))
+            Text("Todas las apps", fontSize = 18.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(start = 20.dp, top = 14.dp, bottom = 6.dp))
         }
 
         if (s.apps.isEmpty() && !s.loading) item(key = "vacio") {
@@ -116,17 +137,26 @@ fun HomeScreen(
 }
 
 @Composable
-private fun Header(loading: Boolean, onRefresh: () -> Unit) {
+private fun Header(loading: Boolean, onRefresh: () -> Unit, mode: ThemeMode, onToggleTheme: () -> Unit) {
     Box(
         Modifier.fillMaxWidth()
-            .background(Brush.verticalGradient(listOf(UP.Violet.copy(alpha = 0.35f), UP.Bg)))
+            .background(Brush.verticalGradient(listOf(UP.BgTop, UP.Bg)))
             .padding(start = 20.dp, end = 8.dp, top = 24.dp, bottom = 18.dp)
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(verticalAlignment = Alignment.Top) {
             Column(Modifier.weight(1f)) {
-                Text("Universo Pinol", fontSize = 28.sp, fontWeight = FontWeight.Bold)
-                Text("Store", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = UP.VioletLight)
-                Text("Apps de Pinol, siempre al día", color = UP.Muted, modifier = Modifier.padding(top = 4.dp))
+                Text("Universo Pinol", fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = UP.VioletLight)
+                Text("Descubre", fontSize = 30.sp, fontWeight = FontWeight.ExtraBold, color = UP.Text, modifier = Modifier.padding(top = 6.dp))
+                Text("el universo", fontSize = 30.sp, fontWeight = FontWeight.ExtraBold, color = UP.Text)
+                Text("Apps hechas por y para tu equipo.", color = UP.Muted, fontSize = 13.sp, modifier = Modifier.padding(top = 6.dp))
+            }
+            IconButton(onClick = onToggleTheme) {
+                val (icono, texto) = when (mode) {
+                    ThemeMode.AUTO -> Icons.Filled.BrightnessAuto to "Tema automático. Toca para cambiar"
+                    ThemeMode.LIGHT -> Icons.Filled.LightMode to "Tema claro. Toca para cambiar"
+                    ThemeMode.DARK -> Icons.Filled.DarkMode to "Tema oscuro. Toca para cambiar"
+                }
+                Icon(icono, texto, tint = UP.Text)
             }
             if (loading) CircularProgressIndicator(Modifier.size(28.dp).padding(4.dp), strokeWidth = 3.dp, color = UP.VioletLight)
             else IconButton(onClick = onRefresh) { Icon(Icons.Filled.Refresh, "Buscar actualizaciones", tint = UP.Text) }
@@ -135,10 +165,40 @@ private fun Header(loading: Boolean, onRefresh: () -> Unit) {
 }
 
 @Composable
-private fun AppRow(app: StoreApp, status: AppStatus, job: Job?, onClick: () -> Unit, onAction: () -> Unit) {
-    Column(Modifier.fillMaxWidth().clickable(onClick = onClick).padding(horizontal = 20.dp, vertical = 12.dp)) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+private fun FeaturedCard(app: StoreApp, status: AppStatus, job: Job?, onClick: () -> Unit, onAction: () -> Unit) {
+    val base = Color(Store.parseColor(app.color))
+    val shape = RoundedCornerShape(26.dp)
+    OnDarkSurface {
+        Column(
+            Modifier.width(250.dp).height(210.dp).clip(shape)
+                .background(Brush.linearGradient(listOf(lerp(base, Color.Black, 0.5f), lerp(base, Color.Black, 0.75f))))
+                .border(1.dp, Color.White.copy(alpha = 0.12f), shape)
+                .clickable(onClick = onClick).padding(18.dp),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
             AppIcon(app, status != AppStatus.NOT_INSTALLED, 60.dp)
+            Column {
+                Text(app.name, fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Color.White, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Text(
+                    app.tagline, fontSize = 12.sp, color = Color.White.copy(alpha = 0.8f), maxLines = 2, overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.padding(top = 4.dp, bottom = 10.dp)
+                )
+                ActionButton(app, status, job, compact = true, onClick = onAction)
+            }
+        }
+    }
+}
+
+@Composable
+private fun AppRow(app: StoreApp, status: AppStatus, job: Job?, onClick: () -> Unit, onAction: () -> Unit) {
+    val shape = RoundedCornerShape(20.dp)
+    Column(
+        Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 5.dp)
+            .clip(shape).background(UP.Card).border(1.dp, UP.Border, shape)
+            .clickable(onClick = onClick).padding(12.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            AppIcon(app, status != AppStatus.NOT_INSTALLED, 56.dp)
             Spacer(Modifier.width(14.dp))
             Column(Modifier.weight(1f)) {
                 Text(app.name, fontSize = 17.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)

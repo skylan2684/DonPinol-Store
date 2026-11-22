@@ -33,6 +33,7 @@ import com.universopinol.store.data.StoreApp
 import com.universopinol.store.ui.DetailScreen
 import com.universopinol.store.ui.HomeScreen
 import com.universopinol.store.ui.StoreTheme
+import com.universopinol.store.ui.ThemeMode
 import com.universopinol.store.ui.StoreViewModel
 import com.universopinol.store.ui.UP
 import com.universopinol.store.work.UpdateWorker
@@ -40,13 +41,22 @@ import com.universopinol.store.work.UpdateWorker
 class MainActivity : ComponentActivity() {
 
     private val vm: StoreViewModel by viewModels()
+    private val prefs by lazy { getSharedPreferences("tienda", MODE_PRIVATE) }
     private val askNotifications = registerForActivityResult(ActivityResultContracts.RequestPermission()) { }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         UpdateWorker.schedule(this)
         if (Build.VERSION.SDK_INT >= 33 && savedInstanceState == null) askNotifications.launch(Manifest.permission.POST_NOTIFICATIONS)
-        setContent { StoreTheme { App() } }
+        setContent {
+            var mode by remember { mutableStateOf(ThemeMode.values().getOrElse(prefs.getInt("tema", 0)) { ThemeMode.AUTO }) }
+            StoreTheme(mode) {
+                App(mode) { siguiente ->
+                    mode = siguiente
+                    prefs.edit().putInt("tema", siguiente.ordinal).apply()
+                }
+            }
+        }
     }
 
     override fun onResume() {
@@ -59,7 +69,7 @@ class MainActivity : ComponentActivity() {
     }
 
     @androidx.compose.runtime.Composable
-    private fun App() {
+    private fun App(mode: ThemeMode, onMode: (ThemeMode) -> Unit) {
         val s by vm.state.collectAsStateWithLifecycle()
         var detailId by rememberSaveable { mutableStateOf<String?>(null) }
         val snack = remember { SnackbarHostState() }
@@ -85,7 +95,9 @@ class MainActivity : ComponentActivity() {
                         onRefresh = vm::refresh,
                         onOpenDetail = { detailId = it.id },
                         onAction = ::act,
-                        onUpdateAll = vm::updateAll
+                        onUpdateAll = vm::updateAll,
+                        mode = mode,
+                        onToggleTheme = { onMode(ThemeMode.values()[(mode.ordinal + 1) % ThemeMode.values().size]) }
                     )
                 }
             }
