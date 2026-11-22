@@ -2,7 +2,7 @@
 
 Tienda de apps de Pinol, estilo Play Store: muestra sus apps, las instala y avisa e instala las actualizaciones con un toque.
 
-**Descargar la tienda (versión con firma DonPinol):** https://raw.githubusercontent.com/skylan2684/DonPinol-Store/main/apks/UniversoPinolStore-1.0.8.apk
+**Descargar la tienda (versión con firma DonPinol):** https://raw.githubusercontent.com/skylan2684/DonPinol-Store/main/apks/UniversoPinolStore-1.0.9.apk
 Si tenías la tienda anterior, desinstálala primero (la firma cambió y Android no deja actualizar encima). Se instala una sola vez; después se actualiza desde ella misma.
 
 ## Cómo funciona
