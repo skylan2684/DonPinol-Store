@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-21",
+  "updatedAt": "2026-11-22",
   "apps": [
     {
       "id": "com.lecolite.app",
@@ -48,6 +48,22 @@
       "sha256": "7d04cdedc4362a0b805e6c48593a15cbd169c3d4412b2b3014b88ef30e57531a",
       "size": 1056639,
       "updated": "21 nov 2026"
+    },
+    {
+      "id": "com.donpinol.mandodoctor",
+      "name": "Mando Doctor",
+      "tagline": "Diagnostica el drift y el estado de tu mando",
+      "category": "Herramientas",
+      "color": "#4DD0E1",
+      "icon": "icons/mandodoctor.png",
+      "description": "Conecta tu DualSense, DualShock 4, mando de Xbox o genérico por Bluetooth o cable y comprueba su estado sin salir del teléfono. Mide el drift de cada stick y lo clasifica de sin drift a severo, dibuja el recorrido real del stick, prueba los gatillos L2 y R2, los botones y la vibración, y arma un informe que puedes compartir antes de comprar un mando usado. Diagnostica y orienta, pero no repara el hardware. Funciona sin internet y no guarda datos.",
+      "changelog": "• Primera versión\n• Prueba de drift con zona muerta sugerida\n• Recorrido de los sticks\n• Gatillos, botones y vibración\n• Informe para compartir",
+      "versionCode": 1,
+      "versionName": "1.0.0",
+      "apkUrl": "https://raw.githubusercontent.com/skylan2684/DonPinol-Store/main/apks/MandoDoctor-1.0.0.apk",
+      "sha256": "82a534670061ad4022317fa6e4e3fc8a44a0ce211d5061c08c170589e8626e8a",
+      "size": 6535534,
+      "updated": "22 nov 2026"
     },
     {
       "id": "com.universopinol.store",
