@@ -14,8 +14,10 @@ android {
         minSdk = 26
         targetSdk = 35
         // CI: cada compilación sube el versionCode, así cada APK se instala encima de la anterior.
-        versionCode = (System.getenv("GITHUB_RUN_NUMBER") ?: "1").toInt()
-        versionName = "1.0." + (System.getenv("GITHUB_RUN_NUMBER") ?: "0")
+        // Versión DonPinol: STORE_VERSION_CODE fija el número (1.0.<n>); sin eso, usa el número de ejecución.
+        val numero = System.getenv("STORE_VERSION_CODE") ?: System.getenv("GITHUB_RUN_NUMBER") ?: "1"
+        versionCode = numero.toInt()
+        versionName = "1.0." + numero
     }
 
     // La llave de firma NO está en este repositorio público: llega por secretos de GitHub Actions.
@@ -32,7 +34,12 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            signingConfig = if (keystorePath != null) signingConfigs.getByName("tienda") else signingConfigs.getByName("debug")
+            // STORE_UNSIGNED=1: APK sin firmar para la firma central DonPinol (flujo "Firmar APK DonPinol").
+            signingConfig = when {
+                System.getenv("STORE_UNSIGNED") == "1" -> null
+                keystorePath != null -> signingConfigs.getByName("tienda")
+                else -> signingConfigs.getByName("debug")
+            }
         }
     }
 

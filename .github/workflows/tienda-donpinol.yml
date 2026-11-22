@@ -1,0 +1,36 @@
+name: Tienda DonPinol (sin firmar)
+# Compila la tienda SIN firmar y la deja en una Release para la firma central DonPinol (DonPinol-Firma).
+# No toca catalog.json: así las tiendas ya instaladas (llave antigua) no reciben una actualización que no podrían instalar.
+on:
+  workflow_dispatch:
+    inputs:
+      numero: { description: "Número de versión (1.0.N). Debe ser mayor que el anterior", required: true }
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      STORE_UNSIGNED: "1"
+      STORE_VERSION_CODE: ${{ inputs.numero }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: "17" }
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Compilar y ejecutar pruebas
+        run: chmod +x gradlew && ./gradlew assembleRelease testReleaseUnitTest --stacktrace
+      - name: Publicar APK sin firmar
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          APK=$(ls app/build/outputs/apk/release/*.apk | head -1)
+          cp "$APK" UniversoPinolStore-unsigned.apk
+          SHA=$(sha256sum UniversoPinolStore-unsigned.apk | cut -d' ' -f1)
+          gh release create "v1.0.${STORE_VERSION_CODE}" UniversoPinolStore-unsigned.apk --target "$GITHUB_SHA" \
+            --title "Tienda 1.0.${STORE_VERSION_CODE} (sin firmar)" \
+            --notes "APK sin firmar para la firma central DonPinol. SHA-256: ${SHA}"

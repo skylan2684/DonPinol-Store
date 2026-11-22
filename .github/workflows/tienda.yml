@@ -1,10 +1,9 @@
 name: Tienda
 # Compilación lanzada tras cargar los secretos de firma (18-11-2026)
 
+# 22-11-2026: este flujo (llave antigua de la tienda) ya NO se ejecuta solo al subir cambios, para que no
+# publique una tienda con firma distinta a DonPinol. La tienda nueva sale por "Tienda DonPinol (sin firmar)".
 on:
-  push:
-    branches: [ "main" ]
-    paths-ignore: [ "catalog.json", "icons/**", "apks/**", "tools/**", "*.md" ]
   workflow_dispatch:
 
 permissions:
