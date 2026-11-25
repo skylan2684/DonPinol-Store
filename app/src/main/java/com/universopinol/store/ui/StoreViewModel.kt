@@ -33,7 +33,9 @@ data class UiState(
     val jobs: Map<String, Job> = emptyMap(),
     val message: String? = null,
     /** App ya descargada y verificada, lista para que el usuario la instale desde «Descargas». */
-    val readyApp: StoreApp? = null
+    val readyApp: StoreApp? = null,
+    /** Solo en Android 8/9: enlace a la APK verificada para abrir el instalador de Android directo. */
+    val readyInstall: Uri? = null
 ) {
     val apps: List<StoreApp> get() = catalog.apps.filter { it.visible && it.id != Store.SELF_ID }
     val selfUpdate: StoreApp? get() = catalog.apps.firstOrNull { it.id == Store.SELF_ID }?.takeIf { (installed[it.id] ?: Long.MAX_VALUE) < it.versionCode }
@@ -97,11 +99,12 @@ class StoreViewModel(app: Application) : AndroidViewModel(app) {
             val r = withContext(Dispatchers.IO) {
                 runCatching {
                     val file = Downloader.download(ctx, app) { p -> _state.update { it.copy(jobs = it.jobs + (app.id to Job.Downloading(p))) } }
-                    Handoff.saveToDownloads(ctx, file, "${app.name} ${app.versionName}.apk")
-                    file.delete()
+                    val uri = Handoff.saveToDownloads(ctx, file, "${app.name} ${app.versionName}.apk")
+                    if (uri == null) file.delete()
+                    uri
                 }
             }
-            r.onSuccess { _state.update { it.copy(jobs = it.jobs - app.id, readyApp = app) } }
+            r.onSuccess { uri -> _state.update { it.copy(jobs = it.jobs - app.id, readyApp = app, readyInstall = uri) } }
             r.onFailure { e ->
                 _state.update { it.copy(jobs = it.jobs - app.id, message = e.message ?: "No se pudo descargar. Revisa tu internet.") }
             }
@@ -110,7 +113,7 @@ class StoreViewModel(app: Application) : AndroidViewModel(app) {
 
     fun updateAll() = _state.value.updates.forEach { install(it) }
 
-    fun readyHandled() = _state.update { it.copy(readyApp = null) }
+    fun readyHandled() = _state.update { it.copy(readyApp = null, readyInstall = null) }
 
     fun consumeMessage() = _state.update { it.copy(message = null) }
 

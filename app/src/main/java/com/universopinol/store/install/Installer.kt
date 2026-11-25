@@ -2,10 +2,12 @@ package com.universopinol.store.install
 
 import android.content.ContentValues
 import android.content.Context
+import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import androidx.core.content.FileProvider
 import java.io.File
 
 /** Resultado de una instalación, para que la pantalla se entere. */
@@ -23,8 +25,12 @@ object InstallEvents {
  */
 object Handoff {
     /** Guarda la APK ya verificada en la carpeta Descargas (no necesita permisos de almacenamiento). */
-    fun saveToDownloads(context: Context, apk: File, displayName: String) {
-        if (Build.VERSION.SDK_INT < 29) error("Esta versión de Android es muy antigua para guardar la descarga.")
+    fun saveToDownloads(context: Context, apk: File, displayName: String): Uri? {
+        // Android 8 y 9 (muchas radios de carro) no tienen la carpeta Descargas por MediaStore:
+        // se devuelve un enlace al archivo ya verificado y la pantalla abre el instalador de Android directo.
+        if (Build.VERSION.SDK_INT < 29) {
+            return FileProvider.getUriForFile(context, context.packageName + ".apkprovider", apk)
+        }
         val resolver = context.contentResolver
         val values = ContentValues().apply {
             put(MediaStore.Downloads.DISPLAY_NAME, displayName)
@@ -38,6 +44,7 @@ object Handoff {
             out.use { o -> apk.inputStream().use { it.copyTo(o) } }
             val done = ContentValues().apply { put(MediaStore.Downloads.IS_PENDING, 0) }
             resolver.update(uri, done, null, null)
+            return null
         } catch (e: Exception) {
             resolver.delete(uri, null, null)
             throw e

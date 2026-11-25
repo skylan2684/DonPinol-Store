@@ -109,15 +109,25 @@ class MainActivity : ComponentActivity() {
                 title = { Text("${app.name} descargada") },
                 text = {
                     Text(
-                        "La descarga está verificada (SHA-256 correcto). Abre «Descargas», toca «${app.name} ${app.versionName}.apk» " +
+                        if (s.readyInstall != null) "La descarga está verificada (SHA-256 correcto). Toca «Instalar» y sigue los pasos de Android."
+                        else "La descarga está verificada (SHA-256 correcto). Abre «Descargas», toca «${app.name} ${app.versionName}.apk» " +
                             "y sigue los pasos de Android para instalarla."
                     )
                 },
                 confirmButton = {
                     TextButton(onClick = {
+                        val uri = s.readyInstall
                         vm.readyHandled()
-                        startActivity(Intent(android.app.DownloadManager.ACTION_VIEW_DOWNLOADS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-                    }) { Text("Abrir Descargas") }
+                        if (uri != null) {
+                            startActivity(
+                                Intent(Intent.ACTION_VIEW)
+                                    .setDataAndType(uri, "application/vnd.android.package-archive")
+                                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)
+                            )
+                        } else {
+                            startActivity(Intent(android.app.DownloadManager.ACTION_VIEW_DOWNLOADS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                        }
+                    }) { Text(if (s.readyInstall != null) "Instalar" else "Abrir Descargas") }
                 },
                 dismissButton = { TextButton(onClick = vm::readyHandled) { Text("Después") } }
             )
