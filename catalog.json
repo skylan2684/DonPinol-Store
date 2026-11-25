@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-22",
+  "updatedAt": "2026-11-25",
   "apps": [
     {
       "id": "com.lecolite.app",
@@ -94,6 +94,22 @@
       "sha256": "a40b8adf3d20d7005bec47f0cdcd0fabcab86419b42868a6f1f0f702bd7cd345",
       "size": 1530671,
       "updated": "22 nov 2026"
+    },
+    {
+      "id": "com.donpinol.car",
+      "name": "DonPinol Car",
+      "tagline": "Tu pantalla del carro, a tu manera",
+      "category": "Herramientas",
+      "color": "#00E5FF",
+      "icon": "icons/doncar.png",
+      "description": "Launcher propio para la radio del carro: reemplaza la pantalla de inicio de fábrica con velocidad, rumbo y recorrido por GPS, control de la música que suena y accesos directos a Mapas, Música, Radio, Bluetooth, Apps y Ajustes. Solo muestra datos reales que la radio puede dar. Pide permiso de ubicación y de acceso a notificaciones para leer la canción.",
+      "changelog": "• Primera versión del launcher\n• Velocidad, rumbo y recorrido por GPS\n• Controles de música\n• Accesos a Mapas, Música, Radio, Bluetooth, Apps y Ajustes",
+      "versionCode": 1,
+      "versionName": "1.0.1",
+      "apkUrl": "https://raw.githubusercontent.com/skylan2684/DonPinol-Store/main/apks/DonPinolCar-1.0.1.apk",
+      "sha256": "f3140a04ecce2da69c66773c4919a4270a81f1703f294b722458c2fcb72d946a",
+      "size": 662400,
+      "updated": "25 nov 2026"
     }
   ]
 }
