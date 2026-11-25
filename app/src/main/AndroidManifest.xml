@@ -7,8 +7,6 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <!-- Botón «Desinstalar» de la ficha de cada app -->
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
-    <!-- Solo para Android 8/9: abrir el instalador de Android con la APK verificada -->
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" android:maxSdkVersion="28" />
 
     <!-- Solo vemos las apps del catálogo (no todas las del teléfono).
          Al agregar una app nueva a catalog.json hay que listarla aquí también. -->
@@ -19,7 +17,6 @@
         <package android:name="com.donpinol.lecomathgame" />
         <package android:name="com.donpinol.mandodoctor" />
         <package android:name="com.donpinol.mishoras" />
-        <package android:name="com.donpinol.car" />
     </queries>
 
     <application
@@ -39,16 +36,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.apkprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/apk_paths" />
-        </provider>
 
     </application>
 </manifest>
